@@ -46,3 +46,46 @@ bool Password::has_mixed_case(string phrase) {
   }
 
 }
+
+  Password::Password() {
+    pass_history.push_back("ChicoCA-95929");
+  }
+
+  /*
+  receives a string and authenticates it against the latest password in the
+  pass_history, returning true for an exact match or false when it does not match
+  or if a password has not been set.
+  */
+  bool Password::authenticate(string pw) {
+    if (pw.size() < 8) {
+      return false;
+    } 
+    if (pw[0] == pw[1] && pw[1] == pw[2] && pw[0] == pw[2]) {
+      return false;
+    }
+    if (!has_mixed_case(pw)) {
+      return false;
+    }
+    for (int i = 0; i < pass_history.size(); i++) {
+      if (pw == pass_history[i]) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+    /*
+  receives a password and sets the latest in pass_history to it if and only
+  if it meets all criteria:
+    1. The password is at least 8 letters long
+    2. It has no more than 3 of the same leading characters
+    3. It has mixed case (at least one upper case and at least one lower case)
+    4. It was not a previous password in the history
+  */
+  void Password::set(string pw) {
+  if (authenticate(pw)) {
+    pass_history.push_back(pw);
+  }
+
+  }
+

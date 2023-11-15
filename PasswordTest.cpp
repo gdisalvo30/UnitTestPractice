@@ -90,7 +90,7 @@ TEST(PasswordTest, mixed_special_char)
 	ASSERT_EQ(true,actual);
 }
 
-TEST(PasswordTest, dif_letters)
+TEST(PasswordTest, mixed_dif_letters)
 {
 	//set your state
     Password my_password;
@@ -108,5 +108,67 @@ TEST(PasswordTest, mixed_spaces)
 	int actual = my_password.has_mixed_case("a A");
 	//assert my expected outcome
 	ASSERT_EQ(true,actual);
+}
+
+TEST(PasswordTest, mixed_empty_case)
+{
+	//set your state
+    Password my_password;
+	//invoke unit
+	int actual = my_password.has_mixed_case("");
+	//assert my expected outcome
+	ASSERT_EQ(false,actual);
+}
+
+
+TEST(PasswordTest, basic_auth)
+{
+	//set your state
+    Password my_password;
+	//invoke unit
+	bool actual = my_password.authenticate("Octopus123");
+	//assert my expected outcome
+	ASSERT_EQ(true,actual);
+}
+
+TEST(PasswordTest, prev_pass_fail)
+{
+	//set your state
+    Password my_password;
+	my_password.set("Monkeyface123");
+	//invoke unit
+	bool actual = my_password.authenticate("Monkeyface123");
+	//assert my expected outcome
+	ASSERT_EQ(false,actual);
+}
+
+TEST(PasswordTest, three_begin_fail)
+{
+	//set your state
+    Password my_password;
+	//invoke unit
+	bool actual = my_password.authenticate("dddDog12345");
+	//assert my expected outcome
+	ASSERT_EQ(false,actual);
+}
+
+TEST(PasswordTest, not_eight_char)
+{
+	//set your state
+    Password my_password;
+	//invoke unit
+	bool actual = my_password.authenticate("Monk");
+	//assert my expected outcome
+	ASSERT_EQ(false,actual);
+}
+
+TEST(PasswordTest, not_mixed)
+{
+	//set your state
+    Password my_password;
+	//invoke unit
+	bool actual = my_password.authenticate("sillydogacrossthestreet");
+	//assert my expected outcome
+	ASSERT_EQ(false,actual);
 }
 
